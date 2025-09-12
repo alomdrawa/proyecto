@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Catálogo de Juegos de Mesa - Level-Up Gamer</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #1e90ff;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        h1 {
+            color: #1E90FF;
+            font-family: 'Orbitron', sans-serif;
+        }
+        .catalogo {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .item {
+            background-color: #111;
+            border: 2px solid #39FF14;
+            border-radius: 10px;
+            width: 300px;
+            padding: 15px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .item img {
+            width: 250px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+        .precio {
+            color: #39FF14;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        /* Hover parecido a categorías */
+        .item:hover {
+            background-color: #39FF14; /* Fondo verde */
+            border-radius: 8px;
+        }
+        .item:hover img {
+            transform: scale(1.1); /* Agrandar imagen */
+        }
+        .item:hover h2,
+        .item:hover .precio {
+            color: #000; /* Texto negro sobre verde */
+        }
+    </style>
+</head>
+<body>
+    <h1>Catálogo de Juegos de Mesa</h1>
+
+    <div class="catalogo">
+
+        <!-- Juego 1 -->
+        <div class="item">
+            <img src="catan.jpg" alt="Juego de Mesa Catan">
+            <h2>Catan</h2>
+            <p class="precio">$29.990 CLP</p>
+        </div>
+
+        <!-- Juego 2 -->
+        <div class="item">
+            <img src="carcassonne.jpg" alt="Juego de Mesa Carcassonne">
+            <h2>Carcassonne</h2>
+            <p class="precio">$24.990 CLP</p>
+        </div>
+
+    </div>
+</body>
+</html>

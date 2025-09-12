@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Categorías - Level-Up Gamer</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: white;
+            padding-top: 30px;
+        }
+
+        h1 {
+            color: #1E90FF; /* Azul eléctrico */
+            font-family: 'Orbitron', sans-serif;
+            margin-bottom: 40px;
+        }
+
+        .contenedor {
+            display: flex;
+            justify-content: center;
+            gap: 30px; /* Espaciado entre botones */
+            flex-wrap: wrap; /* Para que se acomoden en varias filas si no caben */
+        }
+
+        button {
+            background-color: transparent;
+            border: 2px solid #39FF14; /* Borde verde neón */
+            border-radius: 10px;
+            padding: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            width: 280px;
+            text-align: center;
+        }
+
+        button:hover {
+            background-color: #39FF14; /* Fondo verde al pasar el mouse */
+            border-radius: 10px;
+            transform: scale(1.05); /* Se agranda un poco */
+        }
+
+        button img {
+            padding: 20px;
+            width: 200px;
+            height: 270px;
+            transition: transform 0.3s ease;
+            display: block;
+            margin: 0 auto;
+        }
+
+        button:hover img {
+            transform: scale(1.1); /* La imagen se agranda */
+        }
+
+        .titulo-boton {
+            color: #1E90FF; /* Azul eléctrico */
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
+            font-family: 'Arial Black', Arial, sans-serif;
+        }
+
+        button:hover .titulo-boton {
+            color: #000; /* Texto negro cuando el botón está verde */
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h1>CATEGORÍAS</h1>
+
+    <div class="contenedor">
+        <button>
+            <a href="accesorios.html">
+                <img src="auriculares.jpg" alt="Imagen de audífonos">
+                <div class="titulo-boton">Accesorios</div>
+            </a>
+        </button>
+
+        <button>
+            <a href="juegos.html">
+                <img src="juegos.jpg" alt="Imagen de juegos">
+                <div class="titulo-boton">Juegos de mesa</div>
+            </a>
+        </button>
+
+        <button>
+            <a href="gamers.html">
+                <img src="gamer.jpg" alt="Imagen de gamer">
+                <div class="titulo-boton">Gamers</div>
+            </a>
+        </button>
+    </div>
+</body>
+</html>

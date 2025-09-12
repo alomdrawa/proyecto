@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Level-Up Gamer - Carrito y Comunidad</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        body {
+            background-color: #000000;
+            color: #FFFFFF;
+            line-height: 1.6;
+        }
+        
+        h1, h2, h3, h4 {
+            font-family: 'Orbitron', sans-serif;
+            margin-bottom: 1rem;
+            color: #39FF14;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 2px solid #1E90FF;
+            margin-bottom: 2rem;
+        }
+        
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            color: #39FF14;
+            text-decoration: none;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+        
+        nav ul li a {
+            color: #FFFFFF;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: #39FF14;
+        }
+        
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            margin-left: 0.5rem;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: #1E90FF;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #0077e6;
+        }
+        
+        .btn-secondary {
+            background-color: #39FF14;
+            color: #000000;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #2bd411;
+        }
+        
+        /* blog y comunidad */
+        .blog-section {
+            margin-bottom: 3rem;
+        }
+        
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .blog-card {
+            background-color: #1a1a1a;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+        
+        .blog-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .blog-img {
+            width: 100%;
+            height: 180px;
+            background-color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            overflow: hidden;
+        }
+        
+        .blog-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .blog-content {
+            padding: 1.2rem;
+        }
+        
+        .blog-content h3 {
+            margin-bottom: 0.8rem;
+        }
+        
+        .blog-meta {
+            color: #D3D3D3;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .read-more {
+            color: #1E90FF;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        /* mapa eventos */
+        .btn-map {
+            background-color: #1E90FF;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            margin-top: 1rem;
+            text-decoration: none;
+            display: inline-block;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-map:hover {
+            background-color: #0077e6;
+        }
+        
+        .map-container {
+            background-color: #1a1a1a;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .map-interactive {
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            position: relative;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .map-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .map-image.zoomed {
+            transform: scale(1.5);
+        }
+        
+        .map-zoom-controls {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            display: flex;
+            gap: 5px;
+            z-index: 10;
+        }
+        
+        .zoom-btn {
+            background-color: rgba(30, 144, 255, 0.8);
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .map-links {
+            margin-top: 1rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        /* carrito de compras */
+        .cart-section {
+            background-color: #1a1a1a;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #333;
+        }
+        
+        .cart-items {
+            margin-bottom: 1.5rem;
+        }
+        
+        .cart-item {
+            display: flex;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #333;
+        }
+        
+        .item-img {
+            width: 80px;
+            height: 80px;
+            background-color: #333;
+            margin-right: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            border-radius: 4px;
+        }
+        
+        .item-details {
+            flex-grow: 1;
+        }
+        
+        .item-name {
+            font-weight: 500;
+            margin-bottom: 0.3rem;
+        }
+        
+        .item-price {
+            color: #39FF14;
+            margin-bottom: 0.5rem;
+        }
+        
+        .item-quantity {
+            display: flex;
+            align-items: center;
+        }
+        
+        .quantity-btn {
+            background-color: #333;
+            color: #FFFFFF;
+            border: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .quantity-input {
+            width: 40px;
+            text-align: center;
+            margin: 0 0.5rem;
+            background-color: #000000;
+            color: #FFFFFF;
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 0.2rem;
+        }
+        
+        .remove-item {
+            background: none;
+            border: none;
+            color: #FF0000;
+            cursor: pointer;
+            margin-left: 1rem;
+        }
+        
+        .cart-summary {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid #1E90FF;
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        
+        .summary-total {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #39FF14;
+            margin: 1rem 0;
+        }
+        
+        .checkout-btn {
+            width: 100%;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 2rem;
+            border-top: 1px solid #333;
+            color: #D3D3D3;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 1rem;
+                justify-content: center;
+            }
+            
+            .user-actions {
+                margin-top: 1rem;
+            }
+        }
+        .btn-login, .btn-register {
+            display: inline-block;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-weight: 700;
+            text-decoration: none;   /* quita el subrayado */
+            margin-left: 8px;
+            transition: all 0.3s ease;
+            font-family: "Roboto", sans-serif;
+        }
+
+        /* Estilo del botón de login */
+        .btn-login {
+            background: #1E90FF;     /* azul gamer */
+            color: #000;
+            border: none;
+        }
+
+        .btn-login:hover {
+            background: #63B3FF;
+            transform: translateY(-2px);
+        }
+
+        /* Estilo del botón de registro */
+        .btn-register {
+            background: #39FF14;     /* verde neón gamer */
+            color: #000;
+            border: none;
+        }
+
+        .btn-register:hover {
+            background: #5CFF41;
+            transform: translateY(-2px);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="#" class="logo">LEVEL-UP GAMER</a>
+            <nav>
+                <ul>
+                    <li><a href="#">Inicio</a></li>
+                    <li><a href="#">Productos</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Eventos</a></li>
+                    <li><a href="#">Soporte</a></li>
+                </ul>
+            </nav>
+            <div class="user-actions">
+             <a href="login.html?mode=login" class="btn-login">Iniciar Sesión</a>
+             <a href="login.html?mode=register" class="btn-register">Registrarse</a>
+            </div>
+        </header>
+
+        <main>
+            <!-- sección de Blog yComunidad -->
+            <section class="blog-section">
+                <h2>Blog y Comunidad Gamer</h2>
+                <p>Mantente actualizado con las últimas noticias, consejos y eventos del mundo gamer ٩(ˊᗜˋ*)و.</p>
+                
+                <div class="blog-grid">
+                    <article class="blog-card">
+                        <div class="blog-img">
+                            <img src="juegos_pc.jpg" alt="Los mejores juegos para PC en 2023">
+                        </div>
+                        <div class="blog-content">
+                            <h3>Los mejores juegos para PC en 2025</h3>
+                            <div class="blog-meta">Por: MERISTATION - 2025</div>
+                            <p>Descubre los títulos más esperados y las sorpresas que nos depara este año en el mundo del gaming para PC.</p>
+                            <a href="https://as.com/meristation/plataformas/computadora-personal/top/2025" class="read-more">Leer más</a>
+                        </div>
+                    </article>
+                    
+                    <article class="blog-card">
+                        <div class="blog-img">
+                            <img src="antesvsdsp.jpg" alt="Cómo mejorar tu setup gamer">
+                        </div>
+                        <div class="blog-content">
+                            <h3>Guía: Cómo mejorar tu setup gamer</h3>
+                            <div class="blog-meta">Por: Canal en Youtube: Proto - 2023</div>
+                            <p>Aprende los consejos esenciales para optimizar tu espacio de juego y llevar tu experiencia al siguiente nivel.</p>
+                            <a href="https://www.youtube.com/watch?v=Hzbc9SdCZBo" class="read-more">Leer más</a>
+                        </div>
+                    </article>
+                    
+                    <article class="blog-card">
+                        <div class="blog-img">
+                            <img src="expogame.jpg" alt="Eventos gaming en Chile">
+                        </div>
+                        <div class="blog-content">
+                            <h3>Eventos gaming en Chile 2025</h3>
+                            <div class="blog-meta">Por: Burger King - EXPOGAME 2025</div>
+                            <p>No te pierdas los torneos, convenciones y encuentros de gamers que ocurrirán este mes en todo el país.</p>
+                            <a href="https://www.expogamechile.cl" class="read-more">Leer más</a>
+                        </div>
+                    </article>
+                </div>
+            </section>
+            
+            <!-- codigo del mapa de eventos -->
+            <section class="events-section">
+                <h2>Mapa de Eventos Gaming</h2>
+                <p>Encuentra eventos cerca de tu ubicación y gana puntos LevelUp por participar◝(ᵔᗜᵔ)◜.</p>
+                
+                <div class="map-container">
+                    <div class="map-interactive">
+                        <img src="maps_pao.jpg.png" alt="Mapa de eventos gaming" class="map-image" id="map-image">
+                        <div class="map-zoom-controls">
+                            <button class="zoom-btn" onclick="zoomIn()">+</button>
+                            <button class="zoom-btn" onclick="zoomOut()">-</button>
+                        </div>
+                    </div>
+                    
+                    <div class="map-links">
+                        <a href="https://www.google.com/maps/search/eventos+gaming+chile" class="btn-map" target="_blank">
+                            Ver en Google Maps
+                        </a>
+                        <a href="https://www.google.com/maps" class="btn-map" target="_blank">
+                            Cómo llegar
+                        </a>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- codigo del carrito -->
+            <section class="cart-section">
+                <div class="cart-header">
+                    <h2>Tu Carrito de Compras</h2>
+                    <span id="cart-count">3 productos</span>
+                </div>
+                
+                <div class="cart-items" id="cart-items">
+                </div>
+                
+                <div class="cart-summary">
+                    <div class="summary-row">
+                        <span>Subtotal:</span>
+                        <span id="subtotal">$0 CLP</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Descuento:</span>
+                        <span id="discount">$0 CLP</span>
+                    </div>
+                    <div class="summary-row summary-total">
+                        <span>Total:</span>
+                        <span id="total">$0 CLP</span>
+                    </div>
+                    
+                    <button class="btn btn-primary checkout-btn" id="checkout-btn">Proceder al Pago</button>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <p>LEVEL-UP GAMER - Tu tienda de confianza para productos gaming</p>
+            <p>© 2025 Todos los derechos reservados ദ്ദി(˵ •̀ ᴗ - ˵ ) ✧</p>
+        </footer>
+    </div>
+
+    <script>
+       
+        // funciones para el zoom del mapa
+        let currentZoom = 1;
+        const maxZoom = 3;
+        const minZoom = 1;
+        const zoomStep = 0.5;
+        
+        function zoomIn() {
+            if (currentZoom < maxZoom) {
+                currentZoom += zoomStep;
+                document.getElementById('map-image').style.transform = `scale(${currentZoom})`;
+            }
+        }
+        
+        function zoomOut() {
+            if (currentZoom > minZoom) {
+                currentZoom -= zoomStep;
+                document.getElementById('map-image').style.transform = `scale(${currentZoom})`;
+            }
+        }
+        
+        // zoom con la rueda del mouse
+        document.getElementById('map-image').addEventListener('wheel', function(e) {
+            e.preventDefault();
+            if (e.deltaY < 0) {
+                zoomIn();
+            } else {
+                zoomOut();
+            }
+        });
+        // datos del carrito ( simulación)
+        const cartItems = [
+            {
+                id: 1,
+                name: "PlayStation 5",
+                price: 549990,
+                quantity: 1,
+                image: "PS5"
+            },
+            {
+                id: 2,
+                name: "Auriculares Gamer HyperX Cloud II",
+                price: 79990,
+                quantity: 1,
+                image: "Auriculares"
+            },
+            {
+                id: 3,
+                name: "Mouse Gamer Logitech G502 HERO",
+                price: 49990,
+                quantity: 1,
+                image: "Mouse"
+            }
+        ];
+
+        // funcion para transformar items del carrito
+        function renderCartItems() {
+            const cartItemsContainer = document.getElementById('cart-items');
+            cartItemsContainer.innerHTML = '';
+
+            cartItems.forEach((item, index) => {
+                const cartItemElement = document.createElement('div');
+                cartItemElement.className = 'cart-item';
+                cartItemElement.innerHTML = `
+                    <div class="item-img">${item.image}</div>
+                    <div class="item-details">
+                        <div class="item-name">${item.name}</div>
+                        <div class="item-price">$${item.price.toLocaleString('es-CL')} CLP</div>
+                        <div class="item-quantity">
+                            <button class="quantity-btn" onclick="changeQuantity(${index}, -1)">-</button>
+                            <input type="number" class="quantity-input" value="${item.quantity}" min="1" onchange="updateQuantity(${index}, this.value)">
+                            <button class="quantity-btn" onclick="changeQuantity(${index}, 1)">+</button>
+                            <button class="remove-item" onclick="removeItem(${index})">Eliminar</button>
+                        </div>
+                    </div>
+                `;
+                cartItemsContainer.appendChild(cartItemElement);
+            });
+
+            updateCartSummary();
+        }
+
+        // funcion para cambiar la cantidad de un producto
+        function changeQuantity(index, delta) {
+            cartItems[index].quantity += delta;
+            if (cartItems[index].quantity < 1) {
+                cartItems[index].quantity = 1;
+            }
+            renderCartItems();
+        }
+
+        // funcion q actualiza la cantidad desde el input
+        function updateQuantity(index, value) {
+            const quantity = parseInt(value);
+            if (isNaN(quantity) || quantity < 1) {
+                cartItems[index].quantity = 1;
+            } else {
+                cartItems[index].quantity = quantity;
+            }
+            renderCartItems();
+        }
+
+        // funcion para eliminar un producto del carrito
+        function removeItem(index) {
+            cartItems.splice(index, 1);
+            renderCartItems();
+        }
+
+        // funcion para actualizar el resumen del carrito
+        function updateCartSummary() {
+            const subtotal = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+            const discount = 0; 
+            const total = subtotal - discount;
+
+            document.getElementById('subtotal').textContent = `$${subtotal.toLocaleString('es-CL')} CLP`;
+            document.getElementById('discount').textContent = `-$${discount.toLocaleString('es-CL')} CLP`;
+            document.getElementById('total').textContent = `$${total.toLocaleString('es-CL')} CLP`;
+            document.getElementById('cart-count').textContent = `${cartItems.length} productos`;
+        }
+
+        // inicializar el carrito
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCartItems();
+            
+            // boton del evento para el checkout
+            document.getElementById('checkout-btn').addEventListener('click', () => {
+                alert('¡Gracias por tu compra! En una implementación real, serías redirigido al proceso de pago.');
+            });
+        });
+    </script>
+</body>
+</html>

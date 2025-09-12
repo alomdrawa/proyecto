@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Level-Up Gamer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#000;
+      --text:#fff;
+      --accent-blue:#1E90FF;
+      --accent-green:#39FF14;
+      --radius:8px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:"Roboto",Arial,sans-serif;
+      background:var(--bg);
+      color:var(--text);
+    }
+    header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:16px 32px;
+      background:#0b0b0b;
+    }
+    .logo{
+      font-family:"Orbitron",sans-serif;
+      font-size:20px;
+      color:var(--accent-green);
+    }
+    nav a, nav button{
+      margin-left:10px;
+      padding:8px 14px;
+      border-radius:var(--radius);
+      text-decoration:none;
+      font-weight:700;
+      cursor:pointer;
+      border:none;
+    }
+    .btn-login{background:var(--accent-blue);color:#000;}
+    .btn-register{background:var(--accent-green);color:#000;}
+    .btn-logout{background:transparent;color:var(--text);border:1px solid #666;}
+    main{padding:40px;text-align:center;}
+    h1{font-family:"Orbitron",sans-serif;}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">LEVEL-UP GAMER</div>
+    <nav id="nav-buttons">
+      <!-- Aquí se cargan los botones según la sesión -->
+    </nav>
+  </header>
+
+  <main>
+    <h1>Bienvenido a Level-Up Gamer</h1>
+    <p>Tu tienda gamer de confianza 🎮✨</p>
+  </main>
+
+  <script>
+    const SESSION_KEY="levelup_session";
+    function getSession(){ return JSON.parse(localStorage.getItem(SESSION_KEY)||"null"); }
+    function clearSession(){ localStorage.removeItem(SESSION_KEY); }
+
+    const nav=document.getElementById("nav-buttons");
+    const session=getSession();
+
+    if(session){
+      // Si hay sesión activa → mostrar Perfil y Logout
+      nav.innerHTML=`
+        <a href="perfil.html" class="btn-login">Mi Perfil</a>
+        <button class="btn-logout" id="logout">Cerrar Sesión</button>
+      `;
+      document.getElementById("logout").addEventListener("click", ()=>{
+        clearSession();
+        alert("Sesión cerrada");
+        window.location.href="index.html";
+      });
+    } else {
+      // Si no hay sesión → mostrar Login y Registro
+      nav.innerHTML=`
+        <a href="login.html?mode=login" class="btn-login">Iniciar Sesión</a>
+        <a href="login.html?mode=register" class="btn-register">Registrarse</a>
+      `;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Level-Up Gamer — Registro / Login</title>
+
+  <!-- Fuentes -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #000000;
+      --text: #FFFFFF;
+      --muted: #D3D3D3;
+      --accent-blue: #1E90FF;
+      --accent-green: #39FF14;
+      --card: #0b0b0b;
+      --shadow: rgba(0,0,0,0.6);
+      --radius: 10px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: "Roboto", Arial, sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      padding:24px;
+    }
+    h1{
+      font-family: "Orbitron", sans-serif; 
+      margin:0 0 18px 0;
+      color: var(--accent-green);
+    }
+    .container{max-width:600px;margin:0 auto;}
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:var(--radius);
+      padding:20px;
+      box-shadow: 0 6px 18px var(--shadow);
+      margin-bottom:18px;
+    }
+    label{
+      display:block; 
+      font-weight:600; 
+      margin-bottom:6px;
+      color: var(--accent-green);
+    }
+    
+    /* ESTILO UNIFICADO PARA TODOS LOS CAMPOS DE ENTRADA */
+    input, select, textarea {
+      width:100%; 
+      padding:10px 12px; 
+      border-radius:8px;
+      background: rgba(30, 144, 255, 0.1);
+      border: 1px solid var(--accent-blue);
+      color:var(--text);
+      margin-bottom:12px;
+      box-shadow: 
+        0 0 5px rgba(57, 255, 20, 0.3),
+        inset 0 0 8px rgba(30, 144, 255, 0.2);
+      transition: all 0.3s ease;
+    }
+    
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      box-shadow: 
+        0 0 10px rgba(57, 255, 20, 0.5),
+        inset 0 0 12px rgba(30, 144, 255, 0.3);
+      border-color: #39FF14;
+    }
+    
+    button{
+      background:var(--accent-blue);
+      color:#000;
+      border:none;
+      padding:10px 14px;
+      border-radius:8px;
+      font-weight:700;
+      cursor:pointer;
+    }
+    button.ghost{
+      background:transparent;
+      color:var(--text);
+      border:1px solid rgba(255,255,255,0.08);
+    }
+    .hint{font-size:13px; color:var(--muted);}
+    nav.tabs{
+      display:flex; 
+      gap:8px; 
+      margin-bottom:14px;
+    }
+    nav.tabs button{
+      background:transparent; 
+      color:var(--muted); 
+      border:1px solid rgba(255,255,255,0.04); 
+      padding:8px 12px; 
+      border-radius:8px;
+    }
+    nav.tabs button.active{
+      background:var(--accent-blue); 
+      color:#000; 
+      font-weight:700;
+    }
+    .error{color:#ff6b6b;}
+    .success{color:var(--accent-green);}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Registro / Login</h1>
+
+    <div class="card">
+      <nav class="tabs">
+        <button id="tab-login" class="active">Iniciar sesión</button>
+        <button id="tab-register">Registrarse</button>
+        <button id="tab-recover">Recuperar contraseña</button>
+      </nav>
+
+      <!-- LOGIN -->
+      <form id="form-login">
+        <label for="l-email">Correo electrónico</label>
+        <input id="l-email" type="email" required />
+        <label for="l-pass">Contraseña</label>
+        <input id="l-pass" type="password" required />
+        <button type="submit">Entrar</button>
+        <div id="login-result" class="hint"></div>
+      </form>
+
+      <!-- REGISTRO -->
+      <form id="form-register" style="display:none;">
+        <label for="r-name">Nombre completo</label>
+        <input id="r-name" type="text" required />
+
+        <label for="r-birth">Fecha de nacimiento</label>
+        <input id="r-birth" type="date" required />
+        <div id="age-warning" class="hint"></div>
+
+        <label for="r-email">Correo</label>
+        <input id="r-email" type="email" required />
+        <div class="hint">Si usas un correo @duocuc.cl recibirás 20% de descuento.</div>
+
+        <label for="r-pass">Contraseña</label>
+        <input id="r-pass" type="password" required />
+        <label for="r-pass2">Confirmar contraseña</label>
+        <input id="r-pass2" type="password" required />
+
+        <label for="r-pref">Preferencia</label>
+        <select id="r-pref">
+          <option value="">-- Ninguna --</option>
+          <option value="consolas">Consolas</option>
+          <option value="pc">PC</option>
+          <option value="accesorios">Accesorios</option>
+        </select>
+
+        <button type="submit">Crear cuenta</button>
+        <div id="register-result" class="hint"></div>
+      </form>
+
+      <!-- RECUPERAR -->
+      <form id="form-recover" style="display:none;">
+        <label for="rec-email">Correo para recuperar</label>
+        <input id="rec-email" type="email" required />
+        <button type="submit">Enviar código</button>
+        <div id="recover-result" class="hint"></div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", ()=>{
+      const qs=s=>document.querySelector(s);
+      const DB_KEY="levelup_users"; 
+      const SESSION_KEY="levelup_session";
+
+      function loadUsers(){ return JSON.parse(localStorage.getItem(DB_KEY)||"[]"); }
+      function saveUsers(list){ localStorage.setItem(DB_KEY, JSON.stringify(list)); }
+      function setSession(email){ localStorage.setItem(SESSION_KEY, JSON.stringify({email})); }
+      function getSession(){ return JSON.parse(localStorage.getItem(SESSION_KEY)||"null"); }
+
+      const fLogin=qs("#form-login"), fRegister=qs("#form-register"), fRecover=qs("#form-recover");
+
+      function show(f){ [fLogin,fRegister,fRecover].forEach(x=>x.style.display="none"); f.style.display="block"; }
+      qs("#tab-login").onclick=()=>{show(fLogin); qs("#tab-login").classList.add("active");};
+      qs("#tab-register").onclick=()=>{show(fRegister); qs("#tab-register").classList.add("active");};
+      qs("#tab-recover").onclick=()=>{show(fRecover); qs("#tab-recover").classList.add("active");};
+
+      // Edad
+      qs("#r-birth")?.addEventListener("change", ()=>{
+        const val=qs("#r-birth").value;
+        const msg=qs("#age-warning");
+        if(!val){msg.textContent="";return;}
+        const age=new Date().getFullYear()-new Date(val).getFullYear();
+        msg.textContent = age<18 ? "Debes ser mayor de 18 años." : "Edad válida: "+age+" años.";
+        msg.className="hint "+(age<18?"error":"success");
+      });
+
+      // Registro
+      fRegister.addEventListener("submit", e=>{
+        e.preventDefault();
+        const name=qs("#r-name").value;
+        const birth=qs("#r-birth").value;
+        const email=qs("#r-email").value.toLowerCase();
+        const pass=qs("#r-pass").value;
+        const pass2=qs("#r-pass2").value;
+        const pref=qs("#r-pref").value;
+        const res=qs("#register-result"); res.textContent="";
+
+        const age=new Date().getFullYear()-new Date(birth).getFullYear();
+        if(age<18){res.textContent="Debes ser mayor de 18.";return;}
+        if(pass!==pass2){res.textContent="Contraseñas no coinciden.";return;}
+
+        let users=loadUsers();
+        if(users.some(u=>u.email===email)){res.textContent="Correo ya registrado.";return;}
+        const isDuoc=/@duocuc\.cl$/i.test(email);
+        users.push({name,birth,email,pass:btoa(pass),pref,isDuoc});
+        saveUsers(users);
+        setSession(email);
+        alert("Registro exitoso"+(isDuoc?" — Descuento 20% aplicado":""));
+        window.location.href="index.html"; // ir a principal
+      });
+
+      // Login
+      fLogin.addEventListener("submit", e=>{
+        e.preventDefault();
+        const email=qs("#l-email").value.toLowerCase();
+        const pass=qs("#l-pass").value;
+        const res=qs("#login-result");
+        const users=loadUsers();
+        const u=users.find(x=>x.email===email);
+        if(!u){res.textContent="Correo no registrado";return;}
+        if(u.pass!==btoa(pass)){res.textContent="Contraseña incorrecta";return;}
+        setSession(email);
+        window.location.href="index.html"; // ir a principal
+      });
+
+      // Recuperar (simulado)
+      fRecover.addEventListener("submit", e=>{
+        e.preventDefault();
+        const email=qs("#rec-email").value;
+        const code=Math.floor(100000+Math.random()*900000);
+        localStorage.setItem("pw_reset_"+email, code);
+        qs("#recover-result").textContent="Código enviado: "+code+" (simulado)";
+      });
+
+      //if(getSession()){ window.location.href="index.html"; }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Perfil de Usuario — Level-Up Gamer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#000;
+      --text:#fff;
+      --muted:#bbb;
+      --accent-blue:#1E90FF;
+      --accent-green:#39FF14;
+      --card:#0b0b0b;
+      --shadow:rgba(0,0,0,0.6);
+      --radius:10px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:"Roboto",Arial,sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      padding:24px;
+    }
+    h1,h2{
+      font-family:"Orbitron",sans-serif;
+      color: var(--accent-green);
+    }
+    .container{max-width:800px;margin:0 auto;}
+    .card{
+      background:linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01));
+      border-radius:var(--radius);
+      padding:20px;
+      box-shadow:0 6px 18px var(--shadow);
+      margin-bottom:20px;
+    }
+    label{
+      display:block;
+      margin:10px 0 4px;
+      font-weight:600;
+      color: var(--muted);
+    }
+    
+    /* ESTILO UNIFICADO PARA TODOS LOS CAMPOS DE ENTRADA */
+    input, select, textarea {
+      width:100%;
+      padding:10px 12px;
+      border-radius:8px;
+      background: rgba(30, 144, 255, 0.1);
+      border: 1px solid var(--accent-blue);
+      color:var(--text);
+      margin-bottom:12px;
+      box-shadow: 
+        0 0 5px rgba(57, 255, 20, 0.3),
+        inset 0 0 8px rgba(30, 144, 255, 0.2);
+      transition: all 0.3s ease;
+    }
+    
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      box-shadow: 
+        0 0 10px rgba(57, 255, 20, 0.5),
+        inset 0 0 12px rgba(30, 144, 255, 0.3);
+      border-color: #39FF14;
+    }
+    
+    input:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    
+    button{
+      margin-top:12px;
+      padding:10px 14px;
+      border:none;
+      border-radius:8px;
+      font-weight:700;
+      cursor:pointer;
+    }
+    button.ghost{
+      background:transparent;
+      color:var(--text);
+      border:1px solid rgba(255,255,255,0.2);
+    }
+    button:not(.ghost){
+      background:var(--accent-blue);
+      color:#000;
+    }
+    button:hover{opacity:0.9}
+    .hint{font-size:13px;color:var(--muted);margin-top:6px;}
+    .success{color:var(--accent-green);}
+    .error{color:#ff6b6b;}
+    table{width:100%;border-collapse:collapse;margin-top:10px;}
+    th,td{padding:10px;border-bottom:1px solid rgba(255,255,255,0.1);}
+    th{text-align:left;color:var(--accent-blue);}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Perfil de Usuario</h1>
+
+    <!-- Información personal -->
+    <div class="card">
+      <h2>Información Personal</h2>
+      <form id="form-profile">
+        <label for="p-name">Nombre</label>
+        <input id="p-name" type="text">
+
+        <label for="p-email">Correo</label>
+        <input id="p-email" type="email" disabled>
+
+        <div id="benefits" class="hint"></div>
+        <button type="submit">Guardar cambios</button>
+        <div id="profile-result" class="hint"></div>
+      </form>
+    </div>
+
+    <!-- Gestión de preferencias -->
+    <div class="card">
+      <h2>Gestión de Preferencias</h2>
+      <form id="form-preferencias">
+        <label for="p-pref">Selecciona tu categoría favorita</label>
+        <select id="p-pref">
+          <option value="">-- Ninguna --</option>
+          <option value="consolas">Consolas</option>
+          <option value="pc">PC</option>
+          <option value="accesorios">Accesorios</option>
+        </select>
+        <button type="submit">Guardar Preferencia</button>
+        <div id="pref-result" class="hint"></div>
+      </form>
+    </div>
+
+    <!-- Historial de compras -->
+    <div class="card">
+      <h2>Historial de Compras</h2>
+      <table id="tabla-compras">
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th>Fecha</th>
+            <th>Monto</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Se llena con JS -->
+        </tbody>
+      </table>
+    </div>
+
+    <button id="logout" class="ghost">Cerrar Sesión</button>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", ()=>{
+      const qs=s=>document.querySelector(s);
+      const DB_KEY="levelup_users"; 
+      const SESSION_KEY="levelup_session";
+
+      function loadUsers(){ return JSON.parse(localStorage.getItem(DB_KEY)||"[]"); }
+      function saveUsers(list){ localStorage.setItem(DB_KEY, JSON.stringify(list)); }
+      function getSession(){ return JSON.parse(localStorage.getItem(SESSION_KEY)||"null"); }
+      function clearSession(){ localStorage.removeItem(SESSION_KEY); }
+
+      // Verificar sesión
+      const session=getSession();
+      if(!session){ 
+        alert("Debes iniciar sesión primero");
+        window.location.href="login.html"; 
+        return; 
+      }
+
+      let users=loadUsers();
+      let u=users.find(x=>x.email===session.email);
+      if(!u){ 
+        alert("Usuario no encontrado");
+        window.location.href="login.html"; 
+        return; 
+      }
+
+      // Mostrar info personal
+      qs("#p-name").value=u.name;
+      qs("#p-email").value=u.email;
+      qs("#p-pref").value=u.pref||"";
+
+      // Beneficios
+      const benefits=qs("#benefits");
+      if(u.isDuoc){
+        benefits.innerHTML=`<span class="success">Descuento activo: 20% (correo Duoc)</span>`;
+      }else{
+        benefits.textContent="Sin beneficios especiales.";
+      }
+
+      // Guardar cambios personales
+      qs("#form-profile").addEventListener("submit", e=>{
+        e.preventDefault();
+        u.name=qs("#p-name").value;
+        saveUsers(users);
+        qs("#profile-result").textContent="Datos personales actualizados ✅";
+        setTimeout(()=>qs("#profile-result").textContent="",2500);
+      });
+
+      // Guardar preferencias
+      qs("#form-preferencias").addEventListener("submit", e=>{
+        e.preventDefault();
+        u.pref=qs("#p-pref").value;
+        saveUsers(users);
+        qs("#pref-result").textContent="Preferencia guardada ✅";
+        setTimeout(()=>qs("#pref-result").textContent="",2500);
+      });
+
+      // Historial de compras (demo)
+      const comprasDemo=[
+        {producto:"Teclado Mecánico RGB",fecha:"2025-05-21",monto:"$59.990"},
+        {producto:"Silla Gamer Pro",fecha:"2025-06-10",monto:"$149.990"},
+        {producto:"Monitor 144Hz",fecha:"2025-08-01",monto:"$199.990"}
+      ];
+      const tbody=qs("#tabla-compras tbody");
+      comprasDemo.forEach(c=>{
+        const tr=document.createElement("tr");
+        tr.innerHTML=`<td>${c.producto}</td><td>${c.fecha}</td><td>${c.monto}</td>`;
+        tbody.appendChild(tr);
+      });
+
+      // Logout
+      qs("#logout").addEventListener("click", ()=>{
+        clearSession();
+        alert("Sesión cerrada");
+        window.location.href="login.html";
+      });
+    });
+  </script>
+</body>
+</html>
